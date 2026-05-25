@@ -11,7 +11,7 @@
 
   /* ---------- i18n ---------- */
   var LANG_KEY = 'emdatra_lang';
-  var TITLES = { ar: 'إمداترا | حلول الاستيراد والتصدير', en: 'emdatra | Import & Export Solutions' };
+  var TITLES = window.EMDATRA_TITLES || { ar: 'إمداترا | حلول الاستيراد والتصدير', en: 'emdatra | Import & Export Solutions' };
 
   function applyLang(lang) {
     var html = document.documentElement;

@@ -129,6 +129,12 @@ svg{display:block}
 .ed-sub{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700}
 .ed-sub::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--accent)}
 .ed-sub.en::before{background:var(--faint)}
+.set-logo{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.set-logo__img{width:62px;height:62px;border-radius:14px;object-fit:contain;background:var(--card-2);border:1px solid var(--border);padding:6px;flex-shrink:0}
+.set-logo__up{flex:1;min-width:200px;display:flex;flex-direction:column;gap:7px}
+.set-logo__up input[type=file]{font-size:13px;color:var(--muted)}
+.set-logo__up .ed-sub{margin:0}
+.set-logo__up .ed-sub::before{display:none}
 
 /* repeater */
 .rep__head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}

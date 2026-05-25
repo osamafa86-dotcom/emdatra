@@ -159,6 +159,7 @@ $types = block_types();
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
   </a>
 
+  <script>window.EMDATRA_TITLES={ar:<?= json_encode($seo['title_ar'] ?? 'إمداترا | حلول الاستيراد والتصدير', JSON_UNESCAPED_UNICODE) ?>,en:<?= json_encode($seo['title_en'] ?? 'emdatra | Import & Export Solutions', JSON_UNESCAPED_UNICODE) ?>};</script>
   <script src="js/main.js?v=<?= @filemtime(__DIR__ . '/js/main.js') ?: '1' ?>"></script>
   <script src="js/chat.js?v=<?= @filemtime(__DIR__ . '/js/chat.js') ?: '1' ?>"></script>
 </body>
