@@ -131,6 +131,7 @@ $count  = count($blocks);
 
           <div class="block-row__actions">
             <span class="tag <?= $on ? 'tag--on' : 'tag--off' ?>"><?= $on ? 'ظاهر' : 'مخفي' ?></span>
+            <a class="btn btn--sm" href="block-edit.php?id=<?= (int)$b['id'] ?>">تعديل</a>
             <form method="post" class="inline">
               <?= csrf_field() ?>
               <input type="hidden" name="action" value="toggle">
