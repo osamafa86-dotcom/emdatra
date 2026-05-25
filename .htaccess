@@ -1,0 +1,2 @@
+# Serve the database-driven PHP homepage as the default document.
+DirectoryIndex index.php index.html
