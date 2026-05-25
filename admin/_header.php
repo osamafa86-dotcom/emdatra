@@ -2,6 +2,7 @@
 /** Shared admin shell header. Expects: $PAGE_TITLE (string), $ACTIVE (string). */
 require_once __DIR__ . '/../includes/helpers.php';
 require_once __DIR__ . '/../includes/icons.php';
+require_once __DIR__ . '/../includes/messages.php';
 require_login();
 
 $ACTIVE     = $ACTIVE ?? 'dashboard';
@@ -12,6 +13,7 @@ $cssv       = @filemtime(__DIR__ . '/../css/admin.css') ?: '1';
 
 $nav = [
     'dashboard' => ['label' => 'الأقسام', 'href' => 'index.php', 'icon' => 'layers'],
+    'messages'  => ['label' => 'الرسائل', 'href' => 'messages.php', 'icon' => 'mail', 'badge' => unread_message_count()],
 ];
 ?>
 <!DOCTYPE html>
@@ -39,6 +41,7 @@ $nav = [
         <a href="<?= esc($item['href']) ?>" class="side__link <?= $ACTIVE === $key ? 'is-active' : '' ?>">
           <span class="side__ic"><?= ui_icon($item['icon'], 19) ?></span>
           <?= esc($item['label']) ?>
+          <?php if (!empty($item['badge'])): ?><span class="side__badge"><?= (int) $item['badge'] ?></span><?php endif; ?>
         </a>
       <?php endforeach; ?>
       <a href="../" target="_blank" rel="noopener" class="side__link">

@@ -158,4 +158,27 @@ svg{display:block}
   .section-card{flex-wrap:wrap}
   .section-card__body{flex-basis:55%}
   .section-card__actions{width:100%;justify-content:flex-start;order:3}
+  .msg-card__actions{width:100%;justify-content:flex-start;margin-top:4px}
 }
+
+/* ---------- nav unread badge ---------- */
+.side__badge{margin-inline-start:auto;min-width:21px;height:21px;padding:0 6px;border-radius:11px;background:var(--grad);color:#fff;font-size:11.5px;font-weight:800;display:inline-grid;place-items:center;box-shadow:var(--glow)}
+
+/* ---------- messages ---------- */
+.msg-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.msg-toolbar__count{color:var(--muted);font-size:14px}
+.msg-toolbar__count b{color:#fff}
+.msg-list{display:flex;flex-direction:column;gap:13px}
+.msg-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:17px 19px;box-shadow:var(--shadow);transition:border-color .14s}
+.msg-card:hover{border-color:var(--border-2)}
+.msg-card.is-unread{border-inline-start:3px solid var(--accent);background:linear-gradient(90deg,rgba(255,107,26,.05),transparent 42%)}
+.msg-card__top{display:flex;align-items:flex-start;gap:13px;flex-wrap:wrap}
+.msg-card__avatar{width:44px;height:44px;border-radius:12px;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;flex-shrink:0;box-shadow:var(--glow)}
+.msg-card__id{flex:1;min-width:0}
+.msg-card__name{font-weight:700;color:#fff;font-size:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.msg-card__contact{display:flex;flex-wrap:wrap;gap:5px 16px;margin-top:5px;font-size:13px;color:var(--muted)}
+.msg-card__contact>span{display:inline-flex;align-items:center;gap:6px}
+.msg-card__contact svg{color:var(--faint)}
+.msg-card__contact a{color:var(--accent-2)}
+.msg-card__actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.msg-card__text{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);color:var(--text);font-size:14.5px;white-space:pre-wrap;word-break:break-word}
