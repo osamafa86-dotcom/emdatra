@@ -120,3 +120,22 @@ function bil_text($data, $key, $lang = 'ar')
 {
     return esc(bil_val($data, $key, $lang));
 }
+
+/* ---------- block type metadata ---------- */
+function block_types()
+{
+    return [
+        'hero'     => ['ar' => 'البانر الرئيسي',  'en' => 'Hero'],
+        'stats'    => ['ar' => 'شريط الأرقام',     'en' => 'Stats'],
+        'about'    => ['ar' => 'من نحن',           'en' => 'About'],
+        'services' => ['ar' => 'الخدمات',          'en' => 'Services'],
+        'why'      => ['ar' => 'لماذا نحن',         'en' => 'Why Us'],
+        'contact'  => ['ar' => 'نموذج التواصل',     'en' => 'Contact'],
+        'cta'      => ['ar' => 'شريط الدعوة',       'en' => 'CTA Band'],
+    ];
+}
+function block_label($type, $lang = 'ar')
+{
+    $t = block_types();
+    return $t[$type][$lang] ?? $type;
+}
