@@ -149,6 +149,8 @@ $types = block_types();
         <p class="footer__copy" <?= bil_attrs($footerS, 'copy') ?>><?= bil_text($footerS, 'copy') ?></p>
         <div class="footer__legal">
           <a href="#track" data-track data-ar="تتبّع شحنتك" data-en="Track shipment">تتبّع شحنتك</a>
+          <a href="#freight" data-freight data-ar="حاسبة الشحن" data-en="Freight estimator">حاسبة الشحن</a>
+          <a href="#incoterms" data-incoterms data-ar="دليل Incoterms" data-en="Incoterms guide">دليل Incoterms</a>
           <a href="#" data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</a>
           <a href="#" data-ar="الشروط والأحكام" data-en="Terms &amp; Conditions">الشروط والأحكام</a>
         </div>
@@ -200,6 +202,48 @@ $types = block_types();
     </div>
   </div>
 
+  <div class="quote-modal" id="freightModal" aria-hidden="true">
+    <div class="quote-modal__backdrop" data-freight-close></div>
+    <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="freightTitle">
+      <button class="quote-modal__x" type="button" data-freight-close aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <h3 class="quote-modal__title" id="freightTitle" data-ar="حاسبة تقدير الشحن" data-en="Freight Estimator">حاسبة تقدير الشحن</h3>
+      <p class="quote-modal__sub" data-ar="احسب الوزن القابل للاحتساب وحجم شحنتك — وهو أساس تسعير الشحن لدى الناقلين." data-en="Calculate your shipment's chargeable weight and volume — the basis carriers price freight on.">احسب الوزن القابل للاحتساب وحجم شحنتك — وهو أساس تسعير الشحن لدى الناقلين.</p>
+      <form id="freightForm" novalidate>
+        <div class="field">
+          <label data-ar="وسيلة الشحن" data-en="Shipping mode">وسيلة الشحن</label>
+          <select id="frMode">
+            <option value="sea" data-ar="بحري (LCL)" data-en="Sea (LCL)">بحري (LCL)</option>
+            <option value="air" data-ar="جوي" data-en="Air">جوي</option>
+            <option value="land" data-ar="بري" data-en="Land">بري</option>
+          </select>
+        </div>
+        <div class="quote-grid">
+          <div class="field"><label data-ar="الوزن الإجمالي (كجم)" data-en="Gross weight (kg)">الوزن الإجمالي (كجم)</label><input type="number" id="frWeight" min="0" step="any" dir="ltr"></div>
+          <div class="field"><label data-ar="عدد الطرود" data-en="Packages">عدد الطرود</label><input type="number" id="frQty" min="1" value="1" dir="ltr"></div>
+          <div class="field"><label data-ar="الطول (سم)" data-en="Length (cm)">الطول (سم)</label><input type="number" id="frL" min="0" step="any" dir="ltr"></div>
+          <div class="field"><label data-ar="العرض (سم)" data-en="Width (cm)">العرض (سم)</label><input type="number" id="frW" min="0" step="any" dir="ltr"></div>
+          <div class="field"><label data-ar="الارتفاع (سم)" data-en="Height (cm)">الارتفاع (سم)</label><input type="number" id="frH" min="0" step="any" dir="ltr"></div>
+        </div>
+        <button type="submit" class="btn btn--primary btn--block" data-ar="احسب" data-en="Calculate">احسب</button>
+      </form>
+      <div class="track-result" id="freightResult"></div>
+    </div>
+  </div>
+
+  <div class="quote-modal" id="incotermsModal" aria-hidden="true">
+    <div class="quote-modal__backdrop" data-incoterms-close></div>
+    <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="incoTitle">
+      <button class="quote-modal__x" type="button" data-incoterms-close aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <h3 class="quote-modal__title" id="incoTitle" data-ar="دليل Incoterms 2020" data-en="Incoterms 2020 Guide">دليل Incoterms 2020</h3>
+      <p class="quote-modal__sub" data-ar="شروط التجارة الدولية التي تحدّد مسؤوليات البائع والمشتري. اضغط أي شرط لتفاصيله." data-en="The international trade terms defining buyer and seller responsibilities. Tap any term for details.">شروط التجارة الدولية التي تحدّد مسؤوليات البائع والمشتري. اضغط أي شرط لتفاصيله.</p>
+      <div class="ico-list" id="incoList"></div>
+    </div>
+  </div>
+
   <a href="#home" class="to-top" id="toTop" aria-label="العودة للأعلى">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
   </a>
@@ -209,5 +253,6 @@ $types = block_types();
   <script src="js/chat.js?v=<?= @filemtime(__DIR__ . '/js/chat.js') ?: '1' ?>"></script>
   <script src="js/quote.js?v=<?= @filemtime(__DIR__ . '/js/quote.js') ?: '1' ?>"></script>
   <script src="js/track.js?v=<?= @filemtime(__DIR__ . '/js/track.js') ?: '1' ?>"></script>
+  <script src="js/tools.js?v=<?= @filemtime(__DIR__ . '/js/tools.js') ?: '1' ?>"></script>
 </body>
 </html>

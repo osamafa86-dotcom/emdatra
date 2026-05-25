@@ -47,6 +47,7 @@
     if (trigger) { e.preventDefault(); open(); return; }
     if (e.target.closest('[data-quote-close]')) { e.preventDefault(); close(); }
   });
+  window.emdOpenQuote = open;
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && modal.classList.contains('open')) close();
   });
