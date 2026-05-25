@@ -35,7 +35,7 @@ $logo  = '../' . ($brand['logo'] ?? 'assets/logo.png');
 <title>دخول لوحة التحكم — emdatra</title>
 <link rel="icon" type="image/png" href="<?= esc($logo) ?>">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/admin.css">
+<link rel="stylesheet" href="../css/admin.css?v=<?= @filemtime(__DIR__ . '/../css/admin.css') ?: '1' ?>">
 </head>
 <body>
 <div class="auth">

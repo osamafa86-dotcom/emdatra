@@ -8,6 +8,7 @@ $ACTIVE     = $ACTIVE ?? 'dashboard';
 $PAGE_TITLE = $PAGE_TITLE ?? 'لوحة التحكم';
 $brand      = setting('brand', ['logo' => 'assets/logo.png']);
 $logo       = '../' . ($brand['logo'] ?? 'assets/logo.png');
+$cssv       = @filemtime(__DIR__ . '/../css/admin.css') ?: '1';
 
 $nav = [
     'dashboard' => ['label' => 'الأقسام', 'href' => 'index.php', 'icon' => 'layers'],
@@ -22,7 +23,7 @@ $nav = [
 <title><?= esc($PAGE_TITLE) ?> — emdatra</title>
 <link rel="icon" type="image/png" href="<?= esc($logo) ?>">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/admin.css">
+<link rel="stylesheet" href="../css/admin.css?v=<?= $cssv ?>">
 </head>
 <body>
 <div class="app">
