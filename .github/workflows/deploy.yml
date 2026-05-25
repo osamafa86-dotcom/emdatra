@@ -44,3 +44,8 @@ jobs:
             **/.github/**
             **/README.md
             **/*.zip
+            config.php
+            config.sample.php
+            install.php
+            **/assets/uploads/**
+            **/.ftp-deploy-sync-state.json
