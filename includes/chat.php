@@ -157,6 +157,13 @@ function chat_delete_conversation($id)
     db()->prepare('DELETE FROM emd_conversations WHERE id = ?')->execute([(int) $id]);
 }
 
+/** Human label for a conversation source (empty for normal chat). */
+function chat_source_label($source)
+{
+    $map = ['form' => 'نموذج', 'quote' => 'عرض سعر'];
+    return $map[$source] ?? '';
+}
+
 /** Serialize one message row for JSON responses. */
 function chat_msg_json($row)
 {

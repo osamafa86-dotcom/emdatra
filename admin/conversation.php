@@ -63,7 +63,7 @@ require __DIR__ . '/_header.php';
 <div class="conv-head-card">
   <span class="conv-who__av"><?= esc($initial) ?></span>
   <div class="conv-who">
-    <div class="conv-who__name"><?= esc($conv['name']) ?><?php if (($conv['source'] ?? '') === 'form'): ?> <span class="conv-tag">نموذج</span><?php endif; ?></div>
+    <div class="conv-who__name"><?= esc($conv['name']) ?><?php if ($srcLabel = chat_source_label($conv['source'] ?? '')): ?> <span class="conv-tag"><?= esc($srcLabel) ?></span><?php endif; ?></div>
     <div class="conv-who__contact">
       <?php if (!empty($conv['email'])): ?><a href="mailto:<?= esc($conv['email']) ?>" dir="ltr"><?= ui_icon('mail', 13) ?> <?= esc($conv['email']) ?></a><?php endif; ?>
       <?php if (!empty($conv['phone'])): ?><a href="tel:<?= esc(preg_replace('/[^\d+]/', '', $conv['phone'])) ?>" dir="ltr"><?= ui_icon('phone', 13) ?> <?= esc($conv['phone']) ?></a><?php endif; ?>

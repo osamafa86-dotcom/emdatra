@@ -60,7 +60,7 @@ require __DIR__ . '/_header.php';
             <span class="conv-item__row">
               <span class="conv-item__name">
                 <?= esc($c['name']) ?>
-                <?php if (($c['source'] ?? '') === 'form'): ?><span class="conv-tag">نموذج</span><?php endif; ?>
+                <?php if ($srcLabel = chat_source_label($c['source'] ?? '')): ?><span class="conv-tag"><?= esc($srcLabel) ?></span><?php endif; ?>
               </span>
               <span class="conv-item__time"><?= esc(conv_when($c['updated_at'])) ?></span>
             </span>

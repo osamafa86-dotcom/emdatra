@@ -74,7 +74,7 @@ $types = block_types();
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 3.9 6 3.9 9s-1.3 6.3-3.9 9c-2.6-2.7-3.9-6-3.9-9S9.4 5.7 12 3Z"/></svg>
           <span id="langLabel">EN</span>
         </button>
-        <a href="<?= esc($headerCta['href'] ?? '#contact') ?>" class="btn btn--primary btn--sm header__cta"
+        <a href="<?= esc($headerCta['href'] ?? '#contact') ?>" class="btn btn--primary btn--sm header__cta" data-quote
            data-ar="<?= esc($headerCta['ar'] ?? '') ?>" data-en="<?= esc($headerCta['en'] ?? '') ?>"><?= esc($headerCta['ar'] ?? '') ?></a>
         <button class="menu-btn" id="menuBtn" type="button" aria-label="فتح القائمة" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -155,6 +155,32 @@ $types = block_types();
     </div>
   </footer>
 
+  <div class="quote-modal" id="quoteModal" aria-hidden="true">
+    <div class="quote-modal__backdrop" data-quote-close></div>
+    <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="quoteTitle">
+      <button class="quote-modal__x" type="button" data-quote-close aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <h3 class="quote-modal__title" id="quoteTitle" data-ar="اطلب عرض سعر" data-en="Request a Quote">اطلب عرض سعر</h3>
+      <p class="quote-modal__sub" data-ar="أخبرنا بتفاصيل طلبك وسنعدّ لك عرض سعر مخصّصًا في أقرب وقت." data-en="Tell us about your request and we'll prepare a tailored quote shortly.">أخبرنا بتفاصيل طلبك وسنعدّ لك عرض سعر مخصّصًا في أقرب وقت.</p>
+      <form id="quoteForm" novalidate>
+        <div class="quote-grid">
+          <div class="field"><label data-ar="الاسم الكامل" data-en="Full name">الاسم الكامل</label><input type="text" name="name" required data-ar-ph="اسمك" data-en-ph="Your name" placeholder="اسمك"></div>
+          <div class="field"><label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label><input type="email" name="email" dir="ltr" data-ar-ph="example@email.com" data-en-ph="example@email.com" placeholder="example@email.com"></div>
+          <div class="field"><label data-ar="رقم الهاتف" data-en="Phone">رقم الهاتف</label><input type="tel" name="phone" dir="ltr" data-ar-ph="+966 5X XXX XXXX" data-en-ph="+966 5X XXX XXXX" placeholder="+966 5X XXX XXXX"></div>
+          <div class="field"><label data-ar="المنتج / الخدمة" data-en="Product / Service">المنتج / الخدمة</label><input type="text" name="product" required data-ar-ph="ما الذي تريد استيراده أو تصديره؟" data-en-ph="What to import or export?" placeholder="ما الذي تريد استيراده أو تصديره؟"></div>
+          <div class="field"><label data-ar="الكمية" data-en="Quantity">الكمية</label><input type="text" name="quantity" data-ar-ph="مثال: 500 وحدة / 2 حاوية" data-en-ph="e.g. 500 units / 2 containers" placeholder="مثال: 500 وحدة"></div>
+          <div class="field"><label data-ar="بلد المصدر" data-en="Origin country">بلد المصدر</label><input type="text" name="origin" data-ar-ph="من أين؟" data-en-ph="From?" placeholder="من أين؟"></div>
+          <div class="field"><label data-ar="بلد الوجهة" data-en="Destination">بلد الوجهة</label><input type="text" name="destination" data-ar-ph="إلى أين؟" data-en-ph="To?" placeholder="إلى أين؟"></div>
+        </div>
+        <div class="field"><label data-ar="تفاصيل إضافية" data-en="Additional details">تفاصيل إضافية</label><textarea name="message" rows="3" data-ar-ph="أي تفاصيل تساعدنا في إعداد العرض..." data-en-ph="Any details that help us prepare the quote..." placeholder="أي تفاصيل تساعدنا في إعداد العرض..."></textarea></div>
+        <div class="hp" aria-hidden="true"><label>Website</label><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
+        <button type="submit" class="btn btn--primary btn--block" data-ar="إرسال الطلب" data-en="Send Request">إرسال الطلب</button>
+        <p class="form-status" id="quoteStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
   <a href="#home" class="to-top" id="toTop" aria-label="العودة للأعلى">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
   </a>
@@ -162,5 +188,6 @@ $types = block_types();
   <script>window.EMDATRA_TITLES={ar:<?= json_encode($seo['title_ar'] ?? 'إمداترا | حلول الاستيراد والتصدير', JSON_UNESCAPED_UNICODE) ?>,en:<?= json_encode($seo['title_en'] ?? 'emdatra | Import & Export Solutions', JSON_UNESCAPED_UNICODE) ?>};</script>
   <script src="js/main.js?v=<?= @filemtime(__DIR__ . '/js/main.js') ?: '1' ?>"></script>
   <script src="js/chat.js?v=<?= @filemtime(__DIR__ . '/js/chat.js') ?: '1' ?>"></script>
+  <script src="js/quote.js?v=<?= @filemtime(__DIR__ . '/js/quote.js') ?: '1' ?>"></script>
 </body>
 </html>
