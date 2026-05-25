@@ -1,100 +1,82 @@
 <?php
 require_once __DIR__ . '/../includes/helpers.php';
-require_once __DIR__ . '/../includes/messages.php';
+require_once __DIR__ . '/../includes/chat.php';
 require_login();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
-    $action = $_POST['action'] ?? '';
-    $id     = (int) ($_POST['id'] ?? 0);
-
-    if ($action === 'read' && $id) {
-        mark_message_read($id, true);
-    } elseif ($action === 'unread' && $id) {
-        mark_message_read($id, false);
-    } elseif ($action === 'delete' && $id) {
-        delete_message($id);
-    } elseif ($action === 'read_all') {
-        mark_all_messages_read();
+    if (($_POST['action'] ?? '') === 'delete' && (int) ($_POST['id'] ?? 0)) {
+        chat_delete_conversation((int) $_POST['id']);
     }
     redirect('messages.php');
 }
 
-$messages = get_messages();
-$total    = count($messages);
-$unread   = 0;
-foreach ($messages as $m) {
-    if ((int) $m['is_read'] === 0) $unread++;
+$conversations = get_conversations_safe();
+$total  = count($conversations);
+$unread = 0;
+foreach ($conversations as $c) {
+    if ((int) $c['unread'] > 0) $unread++;
 }
 
-$PAGE_TITLE = 'الرسائل';
+function get_conversations_safe()
+{
+    try { return chat_conversations(); } catch (Throwable $e) { return []; }
+}
+
+function conv_when($ts)
+{
+    $t = strtotime($ts);
+    return date('Y/m/d', $t) === date('Y/m/d') ? date('H:i', $t) : date('Y/m/d', $t);
+}
+
+$PAGE_TITLE = 'المحادثات';
 $ACTIVE     = 'messages';
 require __DIR__ . '/_header.php';
 ?>
 
 <div class="intro">
-  <p>الرسائل الواردة من نموذج التواصل في موقعك. تظهر الجديدة في الأعلى.</p>
+  <p>المحادثات الواردة من موقعك. اضغط على أي محادثة للرد عليها — وسيظهر ردّك للزبون داخل الموقع مباشرةً.</p>
 </div>
 
 <?php if ($total === 0): ?>
   <div class="empty">
     <div class="empty__icon"><?= ui_icon('mail', 30) ?></div>
-    <h2>لا توجد رسائل بعد</h2>
-    <p>عندما يرسل أحد العملاء رسالة عبر نموذج التواصل في موقعك، ستظهر هنا فورًا — ولن تضيع أبدًا.</p>
+    <h2>لا توجد محادثات بعد</h2>
+    <p>عندما يبدأ أحد الزوار محادثة عبر الموقع، ستظهر هنا — وتستطيع الرد عليه مباشرةً.</p>
   </div>
 <?php else: ?>
-  <div class="msg-toolbar">
-    <span class="msg-toolbar__count"><b><?= (int) $total ?></b> رسالة · <b><?= (int) $unread ?></b> غير مقروءة</span>
-    <?php if ($unread): ?>
-      <form method="post" class="inline">
-        <?= csrf_field() ?>
-        <input type="hidden" name="action" value="read_all">
-        <button type="submit" class="btn btn--ghost btn--sm"><?= ui_icon('check', 15) ?> تحديد الكل كمقروء</button>
-      </form>
-    <?php endif; ?>
-  </div>
-
-  <div class="msg-list">
-    <?php foreach ($messages as $m):
-      $read    = (int) $m['is_read'] === 1;
-      $initial = mb_strtoupper(mb_substr(trim($m['name']) !== '' ? $m['name'] : '؟', 0, 1, 'UTF-8'), 'UTF-8');
-      $tel     = preg_replace('/[^\d+]/', '', (string) $m['phone']);
-      $when    = date('Y/m/d — H:i', strtotime($m['created_at']));
+  <div class="conv-list">
+    <?php foreach ($conversations as $c):
+      $unreadN = (int) $c['unread'];
+      $initial = mb_strtoupper(mb_substr(trim($c['name']) !== '' ? $c['name'] : '؟', 0, 1, 'UTF-8'), 'UTF-8');
+      $preview = trim(preg_replace('/\s+/', ' ', (string) $c['last_body']));
+      $preview = mb_substr($preview, 0, 64, 'UTF-8');
+      $mine    = ($c['last_sender'] ?? '') === 'admin';
     ?>
-      <article class="msg-card <?= $read ? '' : 'is-unread' ?>">
-        <div class="msg-card__top">
-          <span class="msg-card__avatar"><?= esc($initial) ?></span>
-          <div class="msg-card__id">
-            <div class="msg-card__name">
-              <?= esc($m['name']) ?>
-              <span class="pill <?= $read ? 'pill--off' : 'pill--on' ?>"><span class="pill__dot"></span><?= $read ? 'مقروءة' : 'جديدة' ?></span>
-            </div>
-            <div class="msg-card__contact">
-              <span><?= ui_icon('mail', 14) ?><a href="mailto:<?= esc($m['email']) ?>" dir="ltr"><?= esc($m['email']) ?></a></span>
-              <?php if (trim((string) $m['phone']) !== ''): ?>
-                <span><?= ui_icon('phone', 14) ?><a href="tel:<?= esc($tel) ?>" dir="ltr"><?= esc($m['phone']) ?></a></span>
-              <?php endif; ?>
-              <span><?= ui_icon('clock', 14) ?><span dir="ltr"><?= esc($when) ?></span></span>
-            </div>
-          </div>
-          <div class="msg-card__actions">
-            <a class="btn btn--ghost btn--sm" href="mailto:<?= esc($m['email']) ?>?subject=<?= rawurlencode('رد من emdatra') ?>"><?= ui_icon('mail-open', 15) ?> رد</a>
-            <form method="post" class="inline">
-              <?= csrf_field() ?>
-              <input type="hidden" name="action" value="<?= $read ? 'unread' : 'read' ?>">
-              <input type="hidden" name="id" value="<?= (int) $m['id'] ?>">
-              <button type="submit" class="iconbtn" title="<?= $read ? 'تحديد كغير مقروءة' : 'تحديد كمقروءة' ?>"><?= ui_icon($read ? 'mail' : 'check', 17) ?></button>
-            </form>
-            <form method="post" class="inline" onsubmit="return confirm('حذف هذه الرسالة نهائيًا؟');">
-              <?= csrf_field() ?>
-              <input type="hidden" name="action" value="delete">
-              <input type="hidden" name="id" value="<?= (int) $m['id'] ?>">
-              <button type="submit" class="iconbtn iconbtn--danger" title="حذف"><?= ui_icon('trash', 17) ?></button>
-            </form>
-          </div>
-        </div>
-        <div class="msg-card__text"><?= esc($m['message']) ?></div>
-      </article>
+      <div class="conv-item <?= $unreadN ? 'is-unread' : '' ?>">
+        <a class="conv-item__link" href="conversation.php?id=<?= (int) $c['id'] ?>">
+          <span class="conv-item__av"><?= esc($initial) ?></span>
+          <span class="conv-item__main">
+            <span class="conv-item__row">
+              <span class="conv-item__name">
+                <?= esc($c['name']) ?>
+                <?php if (($c['source'] ?? '') === 'form'): ?><span class="conv-tag">نموذج</span><?php endif; ?>
+              </span>
+              <span class="conv-item__time"><?= esc(conv_when($c['updated_at'])) ?></span>
+            </span>
+            <span class="conv-item__row">
+              <span class="conv-item__preview"><?php if ($mine): ?><span class="conv-item__you">أنت: </span><?php endif; ?><?= esc($preview) ?></span>
+              <?php if ($unreadN): ?><span class="conv-item__badge"><?= $unreadN ?></span><?php endif; ?>
+            </span>
+          </span>
+        </a>
+        <form method="post" class="inline conv-item__del" onsubmit="return confirm('حذف هذه المحادثة وكل رسائلها نهائيًا؟');">
+          <?= csrf_field() ?>
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="id" value="<?= (int) $c['id'] ?>">
+          <button type="submit" class="iconbtn iconbtn--danger" title="حذف"><?= ui_icon('trash', 16) ?></button>
+        </form>
+      </div>
     <?php endforeach; ?>
   </div>
 <?php endif; ?>

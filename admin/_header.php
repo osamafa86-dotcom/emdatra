@@ -2,7 +2,7 @@
 /** Shared admin shell header. Expects: $PAGE_TITLE (string), $ACTIVE (string). */
 require_once __DIR__ . '/../includes/helpers.php';
 require_once __DIR__ . '/../includes/icons.php';
-require_once __DIR__ . '/../includes/messages.php';
+require_once __DIR__ . '/../includes/chat.php';
 require_login();
 
 $ACTIVE     = $ACTIVE ?? 'dashboard';
@@ -13,7 +13,7 @@ $cssv       = @filemtime(__DIR__ . '/../css/admin.css') ?: '1';
 
 $nav = [
     'dashboard' => ['label' => 'الأقسام', 'href' => 'index.php', 'icon' => 'layers'],
-    'messages'  => ['label' => 'الرسائل', 'href' => 'messages.php', 'icon' => 'mail', 'badge' => unread_message_count()],
+    'messages'  => ['label' => 'المحادثات', 'href' => 'messages.php', 'icon' => 'mail', 'badge' => chat_admin_unread_total()],
 ];
 ?>
 <!DOCTYPE html>

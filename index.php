@@ -1,8 +1,7 @@
 <?php
 /**
- * Database-driven public site (preview).
+ * Database-driven public site (live homepage).
  * Renders global settings + visible blocks using the existing design.
- * Once verified, this becomes index.php.
  */
 require_once __DIR__ . '/includes/helpers.php';
 require_once __DIR__ . '/includes/icons.php';
@@ -47,6 +46,7 @@ $types = block_types();
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css?v=<?= @filemtime(__DIR__ . '/css/style.css') ?: '1' ?>" />
+  <link rel="stylesheet" href="css/chat.css?v=<?= @filemtime(__DIR__ . '/css/chat.css') ?: '1' ?>" />
 </head>
 <body>
 
@@ -160,5 +160,6 @@ $types = block_types();
   </a>
 
   <script src="js/main.js?v=<?= @filemtime(__DIR__ . '/js/main.js') ?: '1' ?>"></script>
+  <script src="js/chat.js?v=<?= @filemtime(__DIR__ . '/js/chat.js') ?: '1' ?>"></script>
 </body>
 </html>

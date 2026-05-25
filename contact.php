@@ -9,7 +9,7 @@ $TO   = 'info@emdatra.com';
 $FROM = 'no-reply@emdatra.org';      // should be a mailbox on your own domain
 /* ========================================================= */
 
-require_once __DIR__ . '/includes/messages.php';
+require_once __DIR__ . '/includes/chat.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -60,10 +60,11 @@ $headers .= "Reply-To: {$name} <{$email}>\r\n";
 $headers .= "MIME-Version: 1.0\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-// Persist to the database first (primary record); email is a best-effort notice.
+// Persist as a conversation (primary record); email is a best-effort notice.
 $saved = false;
 try {
-    save_message($name, $email, $phone, $message, $_SERVER['REMOTE_ADDR'] ?? null);
+    $conv = chat_new_conversation($name, $email, $phone, 'form');
+    chat_add_message($conv['id'], 'user', $message);
     $saved = true;
 } catch (Throwable $e) {
     error_log('emdatra: message save failed — ' . $e->getMessage());
