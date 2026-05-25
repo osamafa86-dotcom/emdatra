@@ -235,6 +235,7 @@ html[dir="ltr"] .about__badge-col { align-items: flex-start; }
 .form-status { margin-top: 14px; font-weight: 600; font-size: 15px; text-align: center; min-height: 22px; }
 .form-status.ok { color: #16894e; }
 .form-status.err { color: #E5484D; }
+.hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 .contact__info { background: var(--ink); color: #fff; border-radius: 24px; padding: 40px 38px; box-shadow: var(--shadow-md); }
 .contact__info-title { font-size: 24px; font-weight: 700; color: #fff; text-align: start; }

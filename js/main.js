@@ -127,11 +127,22 @@
   /* ---------- contact form ---------- */
   var form = $('#contactForm'), status = $('#formStatus');
   var MSG = {
-    ar: { ok: 'تم إرسال رسالتك بنجاح! سنتواصل معك قريبًا.', err: 'الرجاء تعبئة الحقول المطلوبة بشكل صحيح.' },
-    en: { ok: 'Your message has been sent! We will contact you soon.', err: 'Please fill in the required fields correctly.' }
+    ar: {
+      ok: 'تم إرسال رسالتك بنجاح! سنتواصل معك قريبًا.',
+      err: 'الرجاء تعبئة الحقول المطلوبة بشكل صحيح.',
+      sending: 'جارٍ الإرسال...',
+      neterr: 'تعذّر إرسال الرسالة حاليًا. يرجى المحاولة لاحقًا أو مراسلتنا على info@emdatra.com'
+    },
+    en: {
+      ok: 'Your message has been sent! We will contact you soon.',
+      err: 'Please fill in the required fields correctly.',
+      sending: 'Sending...',
+      neterr: 'Could not send your message right now. Please try again later or email info@emdatra.com'
+    }
   };
   function isEmail(v) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v); }
   if (form) {
+    var submitBtn = form.querySelector('button[type="submit"]');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var valid = true;
@@ -143,9 +154,24 @@
       });
       var L = document.documentElement.lang === 'en' ? 'en' : 'ar';
       if (!valid) { status.textContent = MSG[L].err; status.className = 'form-status err'; return; }
-      status.textContent = MSG[L].ok;
-      status.className = 'form-status ok';
-      form.reset();
+
+      status.textContent = MSG[L].sending;
+      status.className = 'form-status';
+      if (submitBtn) submitBtn.disabled = true;
+
+      fetch('contact.php', { method: 'POST', body: new FormData(form) })
+        .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+        .then(function (d) {
+          if (d && d.ok) {
+            status.textContent = MSG[L].ok; status.className = 'form-status ok'; form.reset();
+          } else {
+            status.textContent = MSG[L].err; status.className = 'form-status err';
+          }
+        })
+        .catch(function () {
+          status.textContent = MSG[L].neterr; status.className = 'form-status err';
+        })
+        .then(function () { if (submitBtn) submitBtn.disabled = false; });
     });
     $$('#contactForm input, #contactForm textarea').forEach(function (f) {
       f.addEventListener('input', function () { f.classList.remove('invalid'); });
