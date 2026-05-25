@@ -1,0 +1,11 @@
+# Server-only secrets and runtime files (never commit, never auto-deploy)
+config.php
+
+# User-uploaded media (managed from the dashboard, lives on the server)
+/assets/uploads/
+
+# Misc
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
