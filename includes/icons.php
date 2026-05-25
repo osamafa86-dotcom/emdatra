@@ -1,11 +1,11 @@
 <?php
 /** SVG icon library shared by the control panel and the public site. */
 
-function svg_icon($paths, $size = 20, $sw = 1.8, $extra = '')
+function svg_icon($paths, $size = 20, $sw = 1.8, $stroke = 'currentColor')
 {
     return '<svg viewBox="0 0 24 24" width="' . (int)$size . '" height="' . (int)$size . '" fill="none" '
-        . 'stroke="currentColor" stroke-width="' . $sw . '" stroke-linecap="round" stroke-linejoin="round" '
-        . $extra . '>' . $paths . '</svg>';
+        . 'stroke="' . $stroke . '" stroke-width="' . $sw . '" stroke-linecap="round" stroke-linejoin="round">'
+        . $paths . '</svg>';
 }
 
 /** Interface icons. */
@@ -46,7 +46,7 @@ function block_type_icon($type, $size = 22)
 }
 
 /** Content icons (services / why cards) for the public site. */
-function content_icon($key, $size = 27, $sw = 1.8)
+function content_icon($key, $stroke = '#FF6B1A', $size = 27, $sw = 1.8)
 {
     $m = [
         'import'  => '<path d="M12 14V4"/><path d="m8 10 4 4 4-4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
@@ -59,5 +59,5 @@ function content_icon($key, $size = 27, $sw = 1.8)
         'tag'     => '<path d="M12.6 2.6 21 11a2 2 0 0 1 0 2.8l-7.2 7.2a2 2 0 0 1-2.8 0L2.6 12.6A2 2 0 0 1 2 11.2V4a2 2 0 0 1 2-2h7.2a2 2 0 0 1 1.4.6Z"/><circle cx="7.2" cy="7.2" r="1.3"/>',
         'support' => '<path d="M4 14v-3a8 8 0 0 1 16 0v3"/><path d="M18 14h1.5a1.5 1.5 0 0 1 1.5 1.5v2A1.5 1.5 0 0 1 19.5 19H18zM6 14H4.5A1.5 1.5 0 0 0 3 15.5v2A1.5 1.5 0 0 0 4.5 19H6z"/><path d="M19 19a4 4 0 0 1-4 3h-2"/>',
     ];
-    return svg_icon($m[$key] ?? $m['globe'], $size, $sw);
+    return svg_icon($m[$key] ?? $m['globe'], $size, $sw, $stroke);
 }
