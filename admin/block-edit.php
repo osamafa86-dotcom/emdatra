@@ -69,8 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $content = block_data($block);
-$brand   = setting('brand', ['logo' => 'assets/logo.png']);
-$logo    = '../' . ($brand['logo'] ?? 'assets/logo.png');
 
 /* ---------- field renderers ---------- */
 function ed_input($name, $value, $tag = 'input', $ltr = false)
@@ -91,7 +89,7 @@ function ed_field($field, $src, $prefix)
         $tag = $kind === 'bil_area' ? 'textarea' : 'input';
         echo '<div class="ed-field"><label>' . esc($field['label']) . '</label><div class="ed-bil">';
         echo '<div><span class="ed-sub">عربي</span>' . ed_input($prefix . '[' . $field['ar'] . ']', $src[$field['ar']] ?? '', $tag) . '</div>';
-        echo '<div><span class="ed-sub">English</span>' . ed_input($prefix . '[' . $field['en'] . ']', $src[$field['en']] ?? '', $tag, true) . '</div>';
+        echo '<div><span class="ed-sub en">English</span>' . ed_input($prefix . '[' . $field['en'] . ']', $src[$field['en']] ?? '', $tag, true) . '</div>';
         echo '</div></div>';
     } elseif ($kind === 'icon') {
         $val = $src[$field['key']] ?? '';
@@ -110,85 +108,68 @@ function ed_rep_item($rep, $item, $idx)
 {
     $prefix = 'rep[' . $rep['key'] . '][' . $idx . ']';
     echo '<div class="rep-item" data-item>';
-    echo '<button type="button" class="rep-item__del" data-remove title="حذف العنصر">&times;</button>';
+    echo '<button type="button" class="rep-item__del" data-remove title="حذف العنصر">' . ui_icon('trash', 16) . '</button>';
     echo '<div class="rep-item__fields">';
     foreach ($rep['subfields'] as $sf) {
         ed_field($sf, $item, $prefix);
     }
     echo '</div></div>';
 }
+
+$PAGE_TITLE = 'تعديل: ' . block_label($type);
+$ACTIVE     = 'dashboard';
+require __DIR__ . '/_header.php';
 ?>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<title>تعديل: <?= esc(block_label($type)) ?> — emdatra</title>
-<link rel="icon" type="image/png" href="<?= esc($logo) ?>">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/admin.css">
-</head>
-<body>
 
-<div class="topbar">
-  <div class="topbar__inner">
-    <div class="topbar__brand">
-      <img src="<?= esc($logo) ?>" alt="emdatra">
-      <div><b>emdatra</b><span>تعديل قسم</span></div>
-    </div>
-    <div class="topbar__actions">
-      <a class="btn btn--ghost btn--sm" href="index.php">رجوع للوحة التحكم</a>
-    </div>
-  </div>
+<?php if ($saved): ?>
+  <div class="msg msg--ok"><?= ui_icon('save', 18) ?> تم حفظ التغييرات بنجاح.</div>
+<?php endif; ?>
+
+<div class="intro">
+  <p>عدّل النصوص بالعربية والإنجليزية. <a href="index.php">رجوع لكل الأقسام</a></p>
 </div>
 
-<div class="wrap">
-  <div class="page-head">
-    <div>
-      <h1>تعديل: <?= esc(block_label($type)) ?></h1>
-      <p>عدّل النصوص بالعربية والإنجليزية. لا تترك حقلًا فارغًا إلا إن أردت إخفاء النص.</p>
-    </div>
+<?php if ($type === 'contact'): ?>
+  <div class="hint" style="margin-bottom:18px">
+    بيانات التواصل (الهاتف، البريد، العنوان، ساعات العمل) تُعدَّل من <strong>الإعدادات العامة</strong> (قريبًا) لأنها مشتركة مع تذييل الموقع.
   </div>
+<?php endif; ?>
 
-  <?php if ($saved): ?>
-    <div class="msg msg--ok">تم حفظ التغييرات بنجاح.</div>
-  <?php endif; ?>
+<form method="post" class="editor">
+  <?= csrf_field() ?>
+  <input type="hidden" name="id" value="<?= (int)$id ?>">
 
-  <?php if ($type === 'contact'): ?>
-    <div class="hint" style="margin-top:0;margin-bottom:18px">
-      بيانات التواصل (الهاتف، البريد، العنوان، ساعات العمل) تُعدَّل من صفحة <strong>الإعدادات العامة</strong> (قريبًا)، لأنها مشتركة مع تذييل الموقع.
-    </div>
-  <?php endif; ?>
-
-  <form method="post" class="editor">
-    <?= csrf_field() ?>
-    <input type="hidden" name="id" value="<?= (int)$id ?>">
-
-    <?php foreach ($schema['fields'] as $field) ed_field($field, $content, 'content'); ?>
-
-    <?php foreach ($schema['repeaters'] as $rep):
-        $items = isset($content[$rep['key']]) && is_array($content[$rep['key']]) ? $content[$rep['key']] : [];
-    ?>
-      <div class="rep" data-repeater>
-        <div class="rep__head">
-          <h3><?= esc($rep['label']) ?></h3>
-          <button type="button" class="btn btn--ghost btn--sm" data-add="<?= esc($rep['key']) ?>">+ إضافة <?= esc($rep['item_label']) ?></button>
-        </div>
-        <div class="rep__list" data-list="<?= esc($rep['key']) ?>">
-          <?php foreach ($items as $i => $item) ed_rep_item($rep, $item, $i); ?>
-        </div>
-        <template id="tpl-<?= esc($rep['key']) ?>"><?php ed_rep_item($rep, [], '__i__'); ?></template>
+  <?php if (!empty($schema['fields'])): ?>
+    <div class="ed-card">
+      <div class="ed-card__head">
+        <span class="ic"><?= block_type_icon($type, 20) ?></span>
+        <div><h3>محتوى القسم</h3><span class="sub"><?= esc(block_label($type, 'en')) ?></span></div>
       </div>
-    <?php endforeach; ?>
-
-    <div class="editor__bar">
-      <button type="submit" class="btn">حفظ التغييرات</button>
-      <a class="btn btn--ghost" href="index.php">إلغاء</a>
+      <?php foreach ($schema['fields'] as $field) ed_field($field, $content, 'content'); ?>
     </div>
-  </form>
-</div>
+  <?php endif; ?>
 
-<script src="../js/admin.js"></script>
-</body>
-</html>
+  <?php foreach ($schema['repeaters'] as $rep):
+      $items = isset($content[$rep['key']]) && is_array($content[$rep['key']]) ? $content[$rep['key']] : [];
+  ?>
+    <div class="ed-card rep" data-repeater>
+      <div class="ed-card__head">
+        <span class="ic"><?= ui_icon('layers', 19) ?></span>
+        <div style="flex:1"><h3><?= esc($rep['label']) ?></h3><span class="sub">أضف أو احذف العناصر</span></div>
+        <button type="button" class="btn btn--ghost btn--sm" data-add="<?= esc($rep['key']) ?>"><?= ui_icon('plus', 15) ?> إضافة <?= esc($rep['item_label']) ?></button>
+      </div>
+      <div class="rep__list" data-list="<?= esc($rep['key']) ?>">
+        <?php foreach ($items as $i => $item) ed_rep_item($rep, $item, $i); ?>
+      </div>
+      <template id="tpl-<?= esc($rep['key']) ?>"><?php ed_rep_item($rep, [], '__i__'); ?></template>
+    </div>
+  <?php endforeach; ?>
+
+  <div class="editor__bar">
+    <span class="spacer">لا تنسَ حفظ تعديلاتك</span>
+    <a class="btn btn--ghost" href="index.php">إلغاء</a>
+    <button type="submit" class="btn"><?= ui_icon('save', 17) ?> حفظ التغييرات</button>
+  </div>
+</form>
+
+<?php require __DIR__ . '/_footer.php'; ?>

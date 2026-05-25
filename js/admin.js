@@ -27,6 +27,15 @@
     if (delBtn) {
       var item = delBtn.closest('[data-item]');
       if (item) item.remove();
+      return;
+    }
+
+    if (e.target.closest('#sideToggle')) {
+      document.body.classList.toggle('side-open');
+      return;
+    }
+    if (e.target.closest('#sideBackdrop')) {
+      document.body.classList.remove('side-open');
     }
   });
 })();
