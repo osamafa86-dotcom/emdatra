@@ -64,7 +64,7 @@ function all_settings()
     static $cache = null;
     if ($cache === null) {
         $cache = [];
-        foreach (db()->query('SELECT skey, svalue FROM settings')->fetchAll() as $row) {
+        foreach (db()->query('SELECT skey, svalue FROM emd_settings')->fetchAll() as $row) {
             $decoded = json_decode($row['svalue'], true);
             $cache[$row['skey']] = ($decoded === null && $row['svalue'] !== 'null') ? $row['svalue'] : $decoded;
         }
@@ -80,7 +80,7 @@ function save_setting($key, $value)
 {
     $json = json_encode($value, JSON_UNESCAPED_UNICODE);
     $stmt = db()->prepare(
-        'INSERT INTO settings (skey, svalue) VALUES (?, ?)
+        'INSERT INTO emd_settings (skey, svalue) VALUES (?, ?)
          ON DUPLICATE KEY UPDATE svalue = VALUES(svalue)'
     );
     $stmt->execute([$key, $json]);
@@ -89,7 +89,7 @@ function save_setting($key, $value)
 /* ---------- blocks ---------- */
 function get_blocks($page = 'home', $visible_only = false)
 {
-    $sql = 'SELECT * FROM blocks WHERE page = ?';
+    $sql = 'SELECT * FROM emd_blocks WHERE page = ?';
     if ($visible_only) $sql .= ' AND is_visible = 1';
     $sql .= ' ORDER BY sort_order ASC, id ASC';
     $stmt = db()->prepare($sql);
