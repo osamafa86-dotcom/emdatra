@@ -231,3 +231,16 @@ svg{display:block}
   .conv-msg{max-width:88%}
   .conv-thread{height:min(60vh,420px)}
 }
+
+/* ---------- shipment events ---------- */
+.sh-evform{background:var(--card-2);border:1px solid var(--border);border-radius:13px;padding:16px;margin-bottom:18px}
+.sh-evform .ed-bil{margin-bottom:14px}
+.sh-ev-list{list-style:none}
+.sh-ev{position:relative;display:flex;align-items:flex-start;gap:10px;padding-inline-start:20px;padding-bottom:16px;border-inline-start:2px solid var(--border);margin-inline-start:6px}
+.sh-ev:last-child{padding-bottom:0;border-inline-start-color:transparent}
+.sh-ev__dot{position:absolute;inset-inline-start:-7px;inset-block-start:3px;width:12px;height:12px;border-radius:50%;background:var(--border-2);border:2px solid var(--card)}
+.sh-ev.is-latest .sh-ev__dot{background:var(--accent);box-shadow:0 0 0 4px rgba(255,107,26,.2)}
+.sh-ev__body{flex:1;min-width:0}
+.sh-ev__body b{color:#fff;font-size:14.5px}
+.sh-ev__time{color:var(--faint);font-size:12.5px;margin-inline-start:8px}
+.sh-ev__sub{color:var(--muted);font-size:13px;margin-top:2px}

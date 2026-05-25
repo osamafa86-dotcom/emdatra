@@ -14,6 +14,7 @@ $cssv       = @filemtime(__DIR__ . '/../css/admin.css') ?: '1';
 $nav = [
     'dashboard' => ['label' => 'الأقسام', 'href' => 'index.php', 'icon' => 'layers'],
     'messages'  => ['label' => 'المحادثات', 'href' => 'messages.php', 'icon' => 'mail', 'badge' => chat_admin_unread_total()],
+    'shipments' => ['label' => 'الشحنات', 'href' => 'shipments.php', 'icon' => 'truck'],
     'settings'  => ['label' => 'الإعدادات', 'href' => 'settings.php', 'icon' => 'gear'],
 ];
 ?>

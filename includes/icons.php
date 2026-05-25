@@ -33,6 +33,9 @@ function ui_icon($name, $size = 18)
         'clock'    => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
         'send'     => '<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/>',
         'back'     => '<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
+        'truck'    => '<path d="M14 16V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1"/><path d="M14 8h4l4 4v4a1 1 0 0 1-1 1h-1"/><circle cx="7.5" cy="17" r="2"/><circle cx="17.5" cy="17" r="2"/>',
+        'package'  => '<path d="m21 16-9 5-9-5V8l9-5 9 5Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
+        'pin'      => '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
     ];
     return svg_icon($m[$name] ?? '', $size);
 }

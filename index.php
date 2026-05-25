@@ -148,6 +148,7 @@ $types = block_types();
       <div class="footer__bar">
         <p class="footer__copy" <?= bil_attrs($footerS, 'copy') ?>><?= bil_text($footerS, 'copy') ?></p>
         <div class="footer__legal">
+          <a href="#track" data-track data-ar="تتبّع شحنتك" data-en="Track shipment">تتبّع شحنتك</a>
           <a href="#" data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</a>
           <a href="#" data-ar="الشروط والأحكام" data-en="Terms &amp; Conditions">الشروط والأحكام</a>
         </div>
@@ -181,6 +182,24 @@ $types = block_types();
     </div>
   </div>
 
+  <div class="quote-modal" id="trackModal" aria-hidden="true">
+    <div class="quote-modal__backdrop" data-track-close></div>
+    <div class="quote-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="trackTitle">
+      <button class="quote-modal__x" type="button" data-track-close aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <h3 class="quote-modal__title" id="trackTitle" data-ar="تتبّع شحنتك" data-en="Track your shipment">تتبّع شحنتك</h3>
+      <p class="quote-modal__sub" data-ar="أدخل رقم التتبّع لمعرفة حالة شحنتك ومسارها لحظة بلحظة." data-en="Enter your tracking number to see your shipment status and route.">أدخل رقم التتبّع لمعرفة حالة شحنتك ومسارها لحظة بلحظة.</p>
+      <form id="trackForm" novalidate>
+        <div class="track-search">
+          <input type="text" id="trackNo" dir="ltr" data-ar-ph="رقم التتبّع (مثل ‎EMD-...‎)" data-en-ph="Tracking number (e.g. EMD-...)" placeholder="EMD-...">
+          <button type="submit" class="btn btn--primary" data-ar="تتبّع" data-en="Track">تتبّع</button>
+        </div>
+      </form>
+      <div class="track-result" id="trackResult"></div>
+    </div>
+  </div>
+
   <a href="#home" class="to-top" id="toTop" aria-label="العودة للأعلى">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
   </a>
@@ -189,5 +208,6 @@ $types = block_types();
   <script src="js/main.js?v=<?= @filemtime(__DIR__ . '/js/main.js') ?: '1' ?>"></script>
   <script src="js/chat.js?v=<?= @filemtime(__DIR__ . '/js/chat.js') ?: '1' ?>"></script>
   <script src="js/quote.js?v=<?= @filemtime(__DIR__ . '/js/quote.js') ?: '1' ?>"></script>
+  <script src="js/track.js?v=<?= @filemtime(__DIR__ . '/js/track.js') ?: '1' ?>"></script>
 </body>
 </html>

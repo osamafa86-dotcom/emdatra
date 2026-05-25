@@ -373,3 +373,26 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .quote-modal__sub { color: var(--sub); font-size: 14.5px; margin-bottom: 22px; line-height: 1.7; }
 .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
 @media (max-width: 560px) { .quote-grid { grid-template-columns: 1fr; } .quote-modal__dialog { padding: 26px 18px; } }
+
+/* ---------- shipment tracking ---------- */
+.track-search { display: flex; gap: 10px; }
+.track-search input { flex: 1; min-width: 0; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 12px; font: inherit; font-size: 15px; color: var(--heading); background: var(--bg); }
+.track-search input:focus { outline: none; border-color: var(--orange); background: #fff; box-shadow: 0 0 0 3px rgba(255, 107, 26, .12); }
+.track-search .btn { flex-shrink: 0; }
+.track-result { margin-top: 20px; }
+.track-summary { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; margin-bottom: 18px; }
+.track-route { display: flex; align-items: center; gap: 12px; font-weight: 800; color: var(--heading); font-size: 17px; flex-wrap: wrap; }
+.track-route__arrow { color: var(--orange); font-style: normal; font-size: 20px; }
+.track-badge { display: inline-block; margin-top: 10px; background: var(--orange-light); color: var(--orange-dk); font-weight: 700; font-size: 13px; padding: 5px 13px; border-radius: 20px; }
+.track-meta { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 10px; color: var(--sub); font-size: 13.5px; }
+.track-timeline__title { font-weight: 700; color: var(--heading); margin-bottom: 12px; font-size: 15px; }
+.track-timeline { list-style: none; padding-inline-start: 6px; }
+.track-ev { position: relative; padding-inline-start: 22px; padding-bottom: 18px; border-inline-start: 2px solid var(--border); }
+.track-ev:last-child { border-inline-start-color: transparent; padding-bottom: 0; }
+.track-ev__dot { position: absolute; inset-inline-start: -7px; inset-block-start: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--light); border: 2px solid #fff; }
+.track-ev.is-latest .track-ev__dot { background: var(--orange); box-shadow: 0 0 0 4px rgba(255, 107, 26, .18); }
+.track-ev__body b { color: var(--heading); font-size: 14.5px; }
+.track-ev__time { color: var(--sub); font-size: 12.5px; margin-inline-start: 8px; }
+.track-ev__sub { color: var(--body); font-size: 13px; margin-top: 2px; }
+.track-empty, .track-notfound { text-align: center; color: var(--sub); font-size: 14px; padding: 14px; }
+.track-notfound { color: #E5484D; }
