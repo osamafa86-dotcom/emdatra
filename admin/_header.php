@@ -15,6 +15,7 @@ $nav = [
     'dashboard' => ['label' => 'الأقسام', 'href' => 'index.php', 'icon' => 'layers'],
     'messages'  => ['label' => 'المحادثات', 'href' => 'messages.php', 'icon' => 'mail', 'badge' => chat_admin_unread_total()],
     'shipments' => ['label' => 'الشحنات', 'href' => 'shipments.php', 'icon' => 'truck'],
+    'catalog'   => ['label' => 'الكتالوج', 'href' => 'catalog.php', 'icon' => 'package'],
     'settings'  => ['label' => 'الإعدادات', 'href' => 'settings.php', 'icon' => 'gear'],
 ];
 ?>
