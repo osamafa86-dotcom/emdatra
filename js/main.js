@@ -159,10 +159,14 @@
       status.className = 'form-status';
       if (submitBtn) submitBtn.disabled = true;
 
-      fetch('contact.php', { method: 'POST', body: new FormData(form) })
-        .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+      fetch('https://formsubmit.co/ajax/osama.fa.mayadmeh@gmail.com', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function (r) { return r.json().catch(function () { return { success: false }; }); })
         .then(function (d) {
-          if (d && d.ok) {
+          if (d && (d.success === true || d.success === 'true')) {
             status.textContent = MSG[L].ok; status.className = 'form-status ok'; form.reset();
           } else {
             status.textContent = MSG[L].err; status.className = 'form-status err';
