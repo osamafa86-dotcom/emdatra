@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/z4sww4p4xieh/public_html/emdatra
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R admin assets css includes js templates $DEPLOYPATH/
+    - /bin/cp index.php catalog.php chat.php quote.php track.php config.sample.php manifest.json sw.js .htaccess $DEPLOYPATH/
