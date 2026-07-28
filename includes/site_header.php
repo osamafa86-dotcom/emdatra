@@ -18,8 +18,14 @@ $logoHref = $isHome ? '#home' : 'index.php';
   <meta name="description" content="<?= esc($descAr) ?>" />
   <meta name="theme-color" content="#14171C" />
 
+  <link rel="manifest" href="manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="emdatra" />
+
   <link rel="icon" type="image/png" href="<?= esc($logo) ?>" />
-  <link rel="apple-touch-icon" href="<?= esc($logo) ?>" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
 
   <meta property="og:title" content="<?= esc($titleAr) ?>" />
   <meta property="og:description" content="<?= esc($descAr) ?>" />

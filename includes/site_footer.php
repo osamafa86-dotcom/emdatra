@@ -164,5 +164,10 @@ $F = __DIR__ . '/..';
   <script src="js/quote.js?v=<?= @filemtime($F . '/js/quote.js') ?: '1' ?>"></script>
   <script src="js/track.js?v=<?= @filemtime($F . '/js/track.js') ?: '1' ?>"></script>
   <script src="js/tools.js?v=<?= @filemtime($F . '/js/tools.js') ?: '1' ?>"></script>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js'); });
+    }
+  </script>
 </body>
 </html>
